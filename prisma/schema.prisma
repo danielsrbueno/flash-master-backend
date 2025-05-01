@@ -29,7 +29,7 @@ model Deck {
   updatedAt  DateTime?   @updatedAt
   userId     String
   user       User        @relation(fields: [userId], references: [id])
-  flashcards Flashcard[] @relation("FlashcardDecks")
+  flashcards Flashcard[]
 }
 
 model Flashcard {
@@ -38,6 +38,6 @@ model Flashcard {
   answer    String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
-  userId    String
-  decks     Deck[]    @relation("FlashcardDecks")
+  deckId    String
+  deck      Deck      @relation(fields: [deckId], references: [id])
 }

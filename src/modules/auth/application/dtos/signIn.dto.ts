@@ -1,10 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-export class CreateUserDTO {
-  @IsString()
-  @IsNotEmpty({ message: 'Nome é obrigatório.' })
-  name: string;
-
+export class SignInDTO {
   @IsNotEmpty({ message: 'Email é obrigatório.' })
   @IsEmail({}, { message: 'Email inválido.' })
   email: string;

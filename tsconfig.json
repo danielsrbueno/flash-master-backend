@@ -17,12 +17,16 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "strict": true,
+    "strict": false,
     "paths": {
       "@/*": ["./src/*"],
       "@test/*": ["./test/*"],
+      "@shared/*": ["src/modules/shared/*"],
       "@database/*": ["src/modules/database/*"],
       "@user/*": ["src/modules/user/*"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@deck/*": ["src/modules/deck/*"],
+      "@flashcard/*": ["src/modules/flashcard/*"]
     }
   }
 }
