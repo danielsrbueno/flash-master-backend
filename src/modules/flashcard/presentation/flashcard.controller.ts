@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { CreateFlashCardDTO } from '@flashcard/application/dtos/createFlashCard.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateFlashCardUseCase } from '@flashcard/application/usecases/createFlashCard.usecase';
@@ -21,10 +21,9 @@ export class FlashCardController {
 
   @Get('fetch-random')
   async handleFetchRandom(
-    @Body() body: { deckId: string },
+    @Query('deckId') deckId: string,
     @CurrentUser() user: TokenDTO,
   ) {
-    const { deckId } = body;
     const { sub: userId } = user;
     return await this.fetchRandomFlashCardUseCase.resolve({ deckId, userId });
   }
