@@ -28,7 +28,7 @@ type FetchManyDecksResponse = Either<
 >;
 
 @Injectable()
-export class fetchManyDecksUseCase {
+export class FetchManyDecksUseCase {
   constructor(private prisma: PrismaService) {}
 
   async resolve({
