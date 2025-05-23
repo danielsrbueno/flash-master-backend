@@ -18,7 +18,7 @@ type FetchRandomFlashCardResponse = Either<
     success: true;
     message?: string;
     data: {
-      flashCard: {
+      flashcard: {
         id: string;
         question: string;
         answer: string;
@@ -75,7 +75,7 @@ export class FetchRandomFlashCardUseCase {
       {
         success: true,
         data: {
-          flashCard: {
+          flashcard: {
             id,
             question,
             answer,
