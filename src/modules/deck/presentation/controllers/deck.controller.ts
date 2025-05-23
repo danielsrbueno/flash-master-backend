@@ -1,17 +1,19 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateDeckDTO } from '@deck/application/dtos/createDeck.dto';
 import { CurrentUser } from '@/shared/decorators/currentUser.decorator';
 import { TokenDTO } from '@/modules/auth/application/dtos/token.dto';
 import { CreateDeckUseCase } from '@deck/application/usecases/createDeck.usecase';
-import { fetchManyDecksUseCase } from '../../application/usecases/fetchManyDecks.usecase';
+import { FetchManyDecksUseCase } from '@deck/application/usecases/fetchManyDecks.usecase';
+import { DeleteDeckUseCase } from '@deck/application/usecases/deleteDeck.usecase';
 
 @Controller('/deck')
 @UseGuards(AuthGuard('jwt'))
 export class DeckController {
   constructor(
     private createDeckUseCase: CreateDeckUseCase,
-    private fetchManyDecksUseCase: fetchManyDecksUseCase,
+    private fetchManyDecksUseCase: FetchManyDecksUseCase,
+    private deleteDeckUseCase: DeleteDeckUseCase
   ) {}
 
   @Post('/create')
@@ -27,7 +29,17 @@ export class DeckController {
 
   @Get('/fetch-many')
   async handleFetchMany(@CurrentUser() user: TokenDTO) {
-    const { sub: userID } = user;
-    return await this.fetchManyDecksUseCase.resolve({ userId: userID });
+    const { sub: userId } = user;
+    return await this.fetchManyDecksUseCase.resolve({ userId: userId });
+  }
+
+  @Delete('/delete/:deckId')
+  async handleDeleteDeck(
+    @CurrentUser() user: TokenDTO,
+    @Param('deckId') deckId: string,
+  ) {
+    const { sub: userId } = user;
+    console.log(deckId)
+    return await this.deleteDeckUseCase.resolve({ userId, deckId });
   }
 }
