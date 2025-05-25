@@ -4,6 +4,7 @@ import { PrismaService } from '@database/infra/prisma.service';
 import { CreateFlashCardUseCase } from '@flashcard/application/usecases/createFlashCard.usecase';
 import { FetchRandomFlashCardUseCase } from '@flashcard/application/usecases/fetchRandomFlashCard.usecase';
 import DeleteFlashCardUseCase from './application/usecases/deleteFlashCard.usecase';
+import FetchManyFlashCardUseCase from './application/usecases/fetchManyFlashCards.usecase';
 
 @Module({
   controllers: [FlashCardController],
@@ -11,7 +12,8 @@ import DeleteFlashCardUseCase from './application/usecases/deleteFlashCard.useca
     PrismaService,
     CreateFlashCardUseCase,
     FetchRandomFlashCardUseCase,
-    DeleteFlashCardUseCase
+    DeleteFlashCardUseCase,
+    FetchManyFlashCardUseCase
   ],
 })
 export class FlashCardModule {}
