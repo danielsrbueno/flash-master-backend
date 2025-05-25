@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateDeckDTO } from '@deck/application/dtos/createDeck.dto';
 import { CurrentUser } from '@/shared/decorators/currentUser.decorator';
@@ -6,6 +6,8 @@ import { TokenDTO } from '@/modules/auth/application/dtos/token.dto';
 import { CreateDeckUseCase } from '@deck/application/usecases/createDeck.usecase';
 import { FetchManyDecksUseCase } from '@deck/application/usecases/fetchManyDecks.usecase';
 import { DeleteDeckUseCase } from '@deck/application/usecases/deleteDeck.usecase';
+import { EditDeckNameDTO } from '@deck/application/dtos/editDeckName.dto';
+import EditDeckNameUseCase from '@deck/application/usecases/editDeckName.usecase';
 
 @Controller('/deck')
 @UseGuards(AuthGuard('jwt'))
@@ -13,7 +15,8 @@ export class DeckController {
   constructor(
     private createDeckUseCase: CreateDeckUseCase,
     private fetchManyDecksUseCase: FetchManyDecksUseCase,
-    private deleteDeckUseCase: DeleteDeckUseCase
+    private deleteDeckUseCase: DeleteDeckUseCase,
+    private editDeckUseCase: EditDeckNameUseCase
   ) {}
 
   @Post('/create')
@@ -33,13 +36,24 @@ export class DeckController {
     return await this.fetchManyDecksUseCase.resolve({ userId: userId });
   }
 
+  @Patch('/edit-name/:deckId')
+  async handleEditName (
+    @CurrentUser() user: TokenDTO,
+    @Param('deckId') deckId: string,
+    @Body() body: EditDeckNameDTO
+  ) {
+    const { sub: userId } = user;
+    const { newName } = body
+
+    return await this.editDeckUseCase.resolve({ userId, newName, deckId })
+  }
+
   @Delete('/delete/:deckId')
-  async handleDeleteDeck(
+  async handleDelete(
     @CurrentUser() user: TokenDTO,
     @Param('deckId') deckId: string,
   ) {
     const { sub: userId } = user;
-    console.log(deckId)
     return await this.deleteDeckUseCase.resolve({ userId, deckId });
   }
 }

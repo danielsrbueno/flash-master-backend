@@ -4,9 +4,10 @@ import { PrismaService } from '@database/infra/prisma.service';
 import { CreateDeckUseCase } from '@deck/application/usecases/createDeck.usecase';
 import { FetchManyDecksUseCase } from '@deck/application/usecases/fetchManyDecks.usecase';
 import { DeleteDeckUseCase } from '@deck/application/usecases/deleteDeck.usecase';
+import EditDeckNameUseCase from '@deck/application/usecases/editDeckName.usecase';
 
 @Module({
   controllers: [DeckController],
-  providers: [PrismaService, CreateDeckUseCase, FetchManyDecksUseCase, DeleteDeckUseCase],
+  providers: [PrismaService, CreateDeckUseCase, FetchManyDecksUseCase, DeleteDeckUseCase, EditDeckNameUseCase],
 })
 export class DeckModule {}
