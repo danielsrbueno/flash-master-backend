@@ -5,6 +5,7 @@ import { CreateFlashCardUseCase } from '@flashcard/application/usecases/createFl
 import { FetchRandomFlashCardUseCase } from '@flashcard/application/usecases/fetchRandomFlashCard.usecase';
 import DeleteFlashCardUseCase from './application/usecases/deleteFlashCard.usecase';
 import FetchManyFlashCardUseCase from './application/usecases/fetchManyFlashCards.usecase';
+import EditFlashCardUseCase from './application/usecases/editFlashCard.usecase';
 
 @Module({
   controllers: [FlashCardController],
@@ -13,7 +14,8 @@ import FetchManyFlashCardUseCase from './application/usecases/fetchManyFlashCard
     CreateFlashCardUseCase,
     FetchRandomFlashCardUseCase,
     DeleteFlashCardUseCase,
-    FetchManyFlashCardUseCase
+    FetchManyFlashCardUseCase,
+    EditFlashCardUseCase
   ],
 })
 export class FlashCardModule {}
