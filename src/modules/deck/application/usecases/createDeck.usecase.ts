@@ -50,7 +50,6 @@ export class CreateDeckUseCase {
     return right(
       {
         success: true,
-        statusCode: 201,
         message: 'Deck criado com sucesso!',
         data: {
           deck: {

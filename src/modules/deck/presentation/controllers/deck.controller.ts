@@ -1,17 +1,22 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateDeckDTO } from '@deck/application/dtos/createDeck.dto';
 import { CurrentUser } from '@/shared/decorators/currentUser.decorator';
 import { TokenDTO } from '@/modules/auth/application/dtos/token.dto';
 import { CreateDeckUseCase } from '@deck/application/usecases/createDeck.usecase';
-import { fetchManyDecksUseCase } from '../../application/usecases/fetchManyDecks.usecase';
+import { FetchManyDecksUseCase } from '@deck/application/usecases/fetchManyDecks.usecase';
+import { DeleteDeckUseCase } from '@deck/application/usecases/deleteDeck.usecase';
+import { EditDeckNameDTO } from '@deck/application/dtos/editDeckName.dto';
+import EditDeckNameUseCase from '@deck/application/usecases/editDeckName.usecase';
 
 @Controller('/deck')
 @UseGuards(AuthGuard('jwt'))
 export class DeckController {
   constructor(
     private createDeckUseCase: CreateDeckUseCase,
-    private fetchManyDecksUseCase: fetchManyDecksUseCase,
+    private fetchManyDecksUseCase: FetchManyDecksUseCase,
+    private deleteDeckUseCase: DeleteDeckUseCase,
+    private editDeckUseCase: EditDeckNameUseCase
   ) {}
 
   @Post('/create')
@@ -27,7 +32,28 @@ export class DeckController {
 
   @Get('/fetch-many')
   async handleFetchMany(@CurrentUser() user: TokenDTO) {
-    const { sub: userID } = user;
-    return await this.fetchManyDecksUseCase.resolve({ userId: userID });
+    const { sub: userId } = user;
+    return await this.fetchManyDecksUseCase.resolve({ userId: userId });
+  }
+
+  @Patch('/edit-name/:deckId')
+  async handleEditName (
+    @CurrentUser() user: TokenDTO,
+    @Param('deckId') deckId: string,
+    @Body() body: EditDeckNameDTO
+  ) {
+    const { sub: userId } = user;
+    const { newName } = body
+
+    return await this.editDeckUseCase.resolve({ userId, newName, deckId })
+  }
+
+  @Delete('/delete/:deckId')
+  async handleDelete(
+    @CurrentUser() user: TokenDTO,
+    @Param('deckId') deckId: string,
+  ) {
+    const { sub: userId } = user;
+    return await this.deleteDeckUseCase.resolve({ userId, deckId });
   }
 }
